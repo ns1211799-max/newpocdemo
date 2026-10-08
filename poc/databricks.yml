@@ -2,15 +2,10 @@
 # See https://docs.databricks.com/dev-tools/bundles/index.html for documentation.
 bundle:
   name: poc
-  uuid: a460608a-f4a2-43e6-b3a0-c6b26ececb98
+  uuid: 688d10d9-4032-477e-9586-9d3a803cff0b
 
 include:
   - resources/*.yml
-
-artifacts:
-  python_artifact:
-    type: whl
-    build: uv build --wheel
 
 # Variable declarations. These variables are assigned in the dev/prod targets below.
 variables:
@@ -30,8 +25,8 @@ targets:
     workspace:
       host: https://dbc-14e66800-a7a9.cloud.databricks.com
     variables:
-      catalog: workspace
-      schema: ${workspace.current_user.short_name}
+      catalog: samples
+      schema: dev
   prod:
     mode: production
     workspace:
@@ -39,7 +34,7 @@ targets:
       # We explicitly deploy to /Workspace/Users/ns1211799@gmail.com to make sure we only have a single copy.
       root_path: /Workspace/Users/ns1211799@gmail.com/.bundle/${bundle.name}/${bundle.target}
     variables:
-      catalog: workspace
+      catalog: samples
       schema: prod
     permissions:
       - user_name: ns1211799@gmail.com

@@ -25,30 +25,8 @@ resources:
         - task_key: notebook_task
           notebook_task:
             notebook_path: ../src/sample_notebook.ipynb
-        - task_key: python_wheel_task
-          depends_on:
-            - task_key: notebook_task
-          python_wheel_task:
-            package_name: poc
-            entry_point: main
-            parameters:
-              - "--catalog"
-              - "${var.catalog}"
-              - "--schema"
-              - "${var.schema}"
-          environment_key: default
-        - task_key: refresh_pipeline
-          depends_on:
-            - task_key: notebook_task
-          pipeline_task:
-            pipeline_id: ${resources.pipelines.poc_etl.id}
 
       environments:
         - environment_key: default
           spec:
             environment_version: "5"
-            dependencies:
-              # By default we just include the .whl file generated for the poc package.
-              # See https://docs.databricks.com/dev-tools/bundles/library-dependencies.html
-              # for more information on how to add other libraries.
-              - ../dist/*.whl
